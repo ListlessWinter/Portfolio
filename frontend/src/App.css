@@ -14,6 +14,36 @@
   z-index: 1;
 }
 
+/* --- FIXED NAVBAR --- */
+.navbar {
+  position: fixed; /* Locks it to the top */
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(15, 15, 15, 0.85); /* Semi-transparent dark background */
+  backdrop-filter: blur(12px); /* Blur effect behind the nav */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1000; /* Ensures it sits ON TOP of everything else */
+}
+
+/* Inner container to center the text */
+.navbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+}
+
+/* Prevent the Home section from being hidden behind the navbar */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Offsets anchor links so they don't hide behind the bar */
+}
+
+body {
+  padding-top: 80px; /* Pushes the whole site down so the first section isn't covered */
+}
+
 /* Info */
 .hero-subtext {
   color: #a1a1aa;

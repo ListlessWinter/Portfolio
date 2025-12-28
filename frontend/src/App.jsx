@@ -1,20 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-// Note: If you created the SocialIcons.jsx file from the previous step, import from there.
-// If not, keep importing from 'lucide-react' but ignore the warnings.
 import { Github, Linkedin, Mail, ExternalLink, Facebook, Instagram } from 'lucide-react';
 import './App.css';
-
-// IMPORT YOUR IMAGE HERE
-// (Ensure Profile.png is actually inside src/assets/)
 import profileImg from './assets/Profile.png'; 
 
 function App() {
 
   const [bgColor, setBgColor] = useState('#0f0f0f');
 
-  // Refs for Scroll Detection
+  // Reference
   const homeRef = useRef(null);
-  const aboutRef = useRef(null); // New Ref for About Section
+  const aboutRef = useRef(null); 
   const workRef = useRef(null);
   const contactRef = useRef(null);
 
@@ -86,16 +81,18 @@ function App() {
     <div>
       <div className='background-transition' style={{ backgroundColor: bgColor }} />
 
-      {/* Navigation */}
-      <nav className="container navbar">
-        <a href="#home" className="logo">Vincent D.</a>
-        <div className="nav-links">
-          <a href="#home">Home</a>
-          <a href="#about">About</a>
-          <a href="#work">Projects</a>
-          <a href="#contact">Contacts</a>
-        </div>
-      </nav>
+{/* Navigation */}
+<nav className="navbar">
+  <div className="container navbar-content">
+    <a href="#home" className="logo">Vincent D.</a>
+    <div className="nav-links">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#work">Projects</a>
+      <a href="#contact">Contacts</a>
+    </div>
+  </div>
+</nav>
 
       {/* 1. HOME SECTION (Intro + Photo) */}
       <header className="section" ref={homeRef} id="home">
