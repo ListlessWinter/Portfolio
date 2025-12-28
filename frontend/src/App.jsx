@@ -19,7 +19,7 @@ function App() {
   const projects = [
     { id: 1, title: "YUMHUNT", category: "Mobile App (Flutter & Dart)", description: "A Food mobile App specifically made for ADNU.", image: "https://placehold.co/600x400/222/3b82f6?text=YumHunt" },
     { id: 2, title: "ADNU-ECO", category: "Web Dev (Django/HTML/CSS)", description: "Ecommerce website built for the ADNU community.", image: "https://placehold.co/600x400/222/3b82f6?text=ADNU-ECO" },
-    { id: 3, title: "Chargeee!!!", category: "Game Dev (C Language)", description: "Text and turn-based game created using C with client and server side implementation.", image: "https://placehold.co/600x400/222/3b82f6?text=Chargeee" },
+    { id: 3, title: "Chargeee!!!", category: "Text-Based Game (C Language)", description: "Text and turn-based game created using C with client and server side implementation.", image: "https://placehold.co/600x400/222/3b82f6?text=Chargeee" },
     { id: 4, title: "Simple Calculator", category: "Frontend (JS/HTML/CSS)", description: "A functional calculator web application built with vanilla JavaScript.", image: "https://placehold.co/600x400/222/3b82f6?text=Calculator" },
     { id: 5, title: "SPARTA", category: "Frontend (JS/HTML/CSS)", description: "Sports Planning and Resource Tracking App.", image: "https://placehold.co/600x400/222/3b82f6?text=SPARTA" },
     { id: 6, title: "PIMS", category: "System (JS/HTML/CSS)", description: "Pharmacy Inventory Management System.", image: "https://placehold.co/600x400/222/3b82f6?text=PIMS" },
@@ -140,7 +140,7 @@ function App() {
           <h2 className="section-title animate-on-scroll fade-up">About Me</h2>
           <div style={{ maxWidth: '900px', margin: '0 auto' }}>
 
-            {/* Bio Paragraph - Fades Up */}
+            {/* Bio Paragraph */}
             <p 
               className="animate-on-scroll fade-up" 
               style={{ fontSize: '1.2rem', color: '#d1d5db', marginBottom: '30px', lineHeight: '1.8', textAlign: 'center' }}
@@ -152,7 +152,7 @@ function App() {
               by writing a clean and well structured code.
             </p>
 
-            {/* Education & Hobbies (Existing Animations) */}
+            {/* Education & Hobbies */}
             <div className="about-grid">
               <div className="about-column animate-on-scroll slide-from-left">
                 <h3>Education:</h3>
@@ -178,7 +178,6 @@ function App() {
           </div>
         </div>
 
-        {/* Tech Section - Fades Up */}
         <div className="tech-section animate-on-scroll fade-up">
           <h3 style={{ fontSize: '1.5rem', marginBottom: '20px', color: '#fff' }}>Technologies</h3>
 
@@ -225,7 +224,7 @@ function App() {
                   <span className="tag">{project.category}</span>
                   <h3>{project.title}</h3>
                   <p>{project.description}</p>
-                  <a href="#" className="btn">View Case Study</a>
+                  <a href="#" className="btn">View Project</a>
                 </div>
               </div>
             ))}
