@@ -6,6 +6,9 @@ import homeBg from './assets/Home2.jpg';
 // import aboutBg from './assets/About.jpg';
 import projectBg from './assets/Project.jpg';
 import contactBg from './assets/Contacts.jpg';
+
+import MouseParticles from './MouseParticles';
+
 function App() {
   const [activeSection, setActiveSection] = useState('home');
 
@@ -15,16 +18,66 @@ function App() {
   const workRef = useRef(null);
   const contactRef = useRef(null);
 
+  const navRefs = useRef([]);
+
+  const [bubbleStyle, setBubbleStyle] = useState({ left: 0, width: 0, opacity: 0 });
+
+  const navLinks = [
+    { id: 'home', label: 'Home' },
+    { id: 'about', label: 'About' },
+    { id: 'work', label: 'Projects' },
+    { id: 'contact', label: 'Contacts' },
+  ];
+
+  // Navbar bubble animation
+  useEffect(() => {
+    const activeIndex = navLinks.findIndex(link => link.id === activeSection);
+    const currentEl = navRefs.current[activeIndex];
+
+    if (currentEl) {
+      setBubbleStyle({
+        left: currentEl.offsetLeft,
+        width: currentEl.offsetWidth,
+        opacity: 1
+      });
+    }
+  }, [activeSection]);
+
+  const handleHover = (index) => {
+    const currentEl = navRefs.current[index];
+    if (currentEl) {
+      setBubbleStyle({
+        left: currentEl.offsetLeft,
+        width: currentEl.offsetWidth,
+        opacity: 1
+      });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    const activeIndex = navLinks.findIndex(link => link.id === activeSection);
+    const currentEl = navRefs.current[activeIndex];
+
+    if (currentEl) {
+      setBubbleStyle({
+        left: currentEl.offsetLeft,
+        width: currentEl.offsetWidth,
+        opacity: 1
+      });
+    }
+  };
+
   // Project Data
   const projects = [
-    { id: 1, title: "YUMHUNT", category: "Mobile App (Flutter & Dart)", description: "A Food mobile App specifically made for ADNU.", image: "https://placehold.co/600x400/222/3b82f6?text=YumHunt" },
-    { id: 2, title: "ADNU-ECO", category: "Web Dev (Django/HTML/CSS)", description: "Ecommerce website built for the ADNU community.", image: "https://placehold.co/600x400/222/3b82f6?text=ADNU-ECO" },
-    { id: 3, title: "Chargeee!!!", category: "Text-Based Game (C Language)", description: "Text and turn-based game created using C with client and server side implementation.", image: "https://placehold.co/600x400/222/3b82f6?text=Chargeee" },
+    { id: 1, title: "SPARTA", category: "Frontend (JS/HTML/CSS)", description: "Sports Planning and Resource Tracking App.", image: "/Sparta.png" },
+    { id: 2, title: "PIMS", category: "System (JS/HTML/CSS)", description: "Pharmacy Inventory Management System.", image: "https://placehold.co/600x400/222/3b82f6?text=PIMS" },
+    { id: 3, title: "IMSU", category: "Text-Based Game (C Language)", description: "Intramurals Management System for Universities", image: "/IMSU.png" },
     { id: 4, title: "Simple Calculator", category: "Frontend (JS/HTML/CSS)", description: "A functional calculator web application built with vanilla JavaScript.", image: "https://placehold.co/600x400/222/3b82f6?text=Calculator" },
-    { id: 5, title: "SPARTA", category: "Frontend (JS/HTML/CSS)", description: "Sports Planning and Resource Tracking App.", image: "https://placehold.co/600x400/222/3b82f6?text=SPARTA" },
-    { id: 6, title: "PIMS", category: "System (JS/HTML/CSS)", description: "Pharmacy Inventory Management System.", image: "https://placehold.co/600x400/222/3b82f6?text=PIMS" },
+    { id: 5, title: "YUMHUNT", category: "Mobile App (Flutter & Dart)", description: "A Food mobile App specifically made for ADNU.", image: "/YumHunt.png" },
+    { id: 6, title: "ADNU-ECO", category: "Web Dev (Django/HTML/CSS)", description: "Ecommerce website built for the ADNU community.", image: "/ADNUeco.png" },
     { id: 7, title: "Intramurals System", category: "System (JS/HTML/CSS)", description: "Management System for Universities.", image: "https://placehold.co/600x400/222/3b82f6?text=IMS" },
-    { id: 8, title: "Taylor Swift Fan Page", category: "Frontend (JS/HTML/CSS)", description: "A fan tribute page.", image: "https://placehold.co/600x400/222/3b82f6?text=Taylor+Swift" },
+    { id: 8, title: "Swiftly thread", category: "Frontend (JS/HTML/CSS)", description: "A fan Taylor Swift tribute page.", image: "/Taylor.png" },
+    { id: 9, title: "Chargeee!!!", category: "Text-Based Game (C Language)", description: "Text and turn-based game created using C with client and server side implementation.", image: "https://placehold.co/600x400/222/3b82f6?text=Chargeee" },
   ];
 
   // Spliting the Projects
@@ -35,6 +88,7 @@ function App() {
   useEffect(() => {
     const sections = [
       { id: 'home', ref: homeRef },
+      { id: 'about', ref: aboutRef },
       { id: 'work', ref: workRef },
       { id: 'contact', ref: contactRef },
     ];
@@ -45,7 +99,7 @@ function App() {
           if (entry.isIntersecting) {
             const visible = sections.find((s) => s.ref.current === entry.target);
             if (visible) {
-              setActiveSection(visible.id); 
+              setActiveSection(visible.id);
             }
           }
         });
@@ -60,60 +114,82 @@ function App() {
     return () => observer.disconnect();
   }, []);
 
- // Text Scroll Animation
- useEffect(() => {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate-visible');
-        } else {
-          entry.target.classList.remove('animate-visible');
-        }
-      });
-    },
-    { threshold: 0.1 }
-  );
+  // Text Scroll Animation
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-visible');
+          } else {
+            entry.target.classList.remove('animate-visible');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
 
-  const hiddenElements = document.querySelectorAll('.animate-on-scroll');
-  hiddenElements.forEach((el) => observer.observe(el));
+    const hiddenElements = document.querySelectorAll('.animate-on-scroll');
+    hiddenElements.forEach((el) => observer.observe(el));
 
-  return () => observer.disconnect();
-}, []);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div>
-     <div className="bg-container">
-        {/* Home Image */}
-        <img 
-          src={homeBg} 
+      <MouseParticles />
+      <div className="bg-container">
+        {/* Home BgImage */}
+        <img
+          src={homeBg}
           className={`bg-image ${activeSection === 'home' ? 'visible' : ''}`}
-          alt="Home Background" 
-        />
-        
-        {/* Project Image */}
-        <img 
-          src={projectBg} 
-          className={`bg-image ${activeSection === 'work' ? 'visible' : ''}`}
-          alt="Work Background" 
+          alt="Home Background"
         />
 
-        {/* Contact Image */}
-        <img 
-          src={contactBg} 
+        {/* About BgImage */}
+        <img
+          src={homeBg}
+          className={`bg-image ${activeSection === 'about' ? 'visible' : ''}`}
+          alt="About Background"
+        />
+
+        {/* Project BgImage */}
+        <img
+          src={projectBg}
+          className={`bg-image ${activeSection === 'work' ? 'visible' : ''}`}
+          alt="Work Background"
+        />
+
+        {/* Contact BgImage */}
+        <img
+          src={contactBg}
           className={`bg-image ${activeSection === 'contact' ? 'visible' : ''}`}
-          alt="Contact Background" 
+          alt="Contact Background"
         />
       </div>
 
+      {/* Navbar */}
       <nav className='navbar'>
         <div className="container navbar-content">
           <a href="#home" className="logo">Vincent Dolera</a>
-          <div className="nav-links">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#work">Projects</a>
-            <a href="#contact">Contacts</a>
+
+          <div className="nav-links" onMouseLeave={handleMouseLeave}>
+
+            <div className="nav-bubble" style={bubbleStyle} />
+            {navLinks.map((link, index) => (
+              <a
+                key={link.id}
+                href={`#${link.id}`}
+                ref={el => navRefs.current[index] = el}
+                className={`nav-item ${activeSection === link.id ? 'active-text' : ''}`}
+                onMouseEnter={() => handleHover(index)}
+                onClick={() => setActiveSection(link.id)}
+              >
+                <span style={{ position: 'relative', zIndex: 2 }}>
+                  {link.label}
+                </span>
+              </a>
+            ))}
           </div>
         </div>
       </nav>
@@ -141,8 +217,8 @@ function App() {
           <div style={{ maxWidth: '900px', margin: '0 auto' }}>
 
             {/* Bio Paragraph */}
-            <p 
-              className="animate-on-scroll fade-up" 
+            <p
+              className="animate-on-scroll fade-up"
               style={{ fontSize: '1.2rem', color: '#d1d5db', marginBottom: '30px', lineHeight: '1.8', textAlign: 'center' }}
             >
               I'm an IT student who enjoys turning ideas into reality through coding. I am responsible and motivated with experience in both
@@ -158,10 +234,10 @@ function App() {
                 <h3>Education:</h3>
                 <ul className="info-list">
                   <li>
-                    <strong>Elementary:</strong> Sunny Garden School for Kids (2008 - 2013)
+                    <strong>High School:</strong> La Consolacion College of Daet (2014 - 2019)
                   </li>
                   <li>
-                    <strong>High School:</strong> La Consolacion College of Daet (2014 - 2019)
+                    <strong>College:</strong> Ateneo De Naga University (2022 - Present)
                   </li>
                 </ul>
               </div>
@@ -235,7 +311,7 @@ function App() {
           <div className="grid-3">
             {otherProjects.map((project, index) => (
               <div key={project.id} className="card fire-border animate-on-scroll fade-up"
-              style={{ transitionDelay: `${index * 100}ms` }}>
+                style={{ transitionDelay: `${index * 100}ms` }}>
                 <img src={project.image} alt={project.title} className="card-image" />
                 <div className="card-content">
                   <span className="tag">{project.category}</span>

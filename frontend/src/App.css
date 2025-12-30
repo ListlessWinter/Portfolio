@@ -73,19 +73,43 @@ html {
 .logo {
   font-weight: 700;
   font-size: 1.5rem;
-  color: var(--text-primary);
+  color: #fff;
   text-decoration: none;
 }
 
-.nav-links a {
-  color: var(--text-secondary);
-  text-decoration: none;
-  margin-left: 24px;
-  transition: color 0.3s;
+.nav-links {
+  position: relative; 
+  display: flex;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 5px;
+  border-radius: 30px;
 }
 
-.nav-links a:hover {
-  color: var(--accent);
+.nav-bubble {
+  position: absolute;
+  top: 5px; 
+  bottom: 5px;
+  background-color: #3b82f6;
+  border-radius: 20px;
+  z-index: 0; 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+}
+
+.nav-item {
+  position: relative;
+  text-decoration: none;
+  color: #a1a1aa;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  z-index: 1; 
+  cursor: pointer;
+}
+
+.nav-item.active-text {
+  color: #fff;
 }
 
 /* Buttons */
@@ -104,7 +128,7 @@ html {
   transform: translateY(-2px);
 }
 
-/* Tags (Used in Home & About) */
+/* Tags */
 .tag {
   display: inline-block;
   padding: 4px 12px;
