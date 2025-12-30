@@ -69,15 +69,14 @@ function App() {
 
   // Project Data
   const projects = [
-    { id: 1, title: "SPARTA", category: "Frontend (JS/HTML/CSS)", description: "Sports Planning and Resource Tracking App.", image: "/Sparta.png" },
-    { id: 2, title: "PIMS", category: "System (JS/HTML/CSS)", description: "Pharmacy Inventory Management System.", image: "https://placehold.co/600x400/222/3b82f6?text=PIMS" },
-    { id: 3, title: "IMSU", category: "Text-Based Game (C Language)", description: "Intramurals Management System for Universities", image: "/IMSU.png" },
-    { id: 4, title: "Simple Calculator", category: "Frontend (JS/HTML/CSS)", description: "A functional calculator web application built with vanilla JavaScript.", image: "https://placehold.co/600x400/222/3b82f6?text=Calculator" },
-    { id: 5, title: "YUMHUNT", category: "Mobile App (Flutter & Dart)", description: "A Food mobile App specifically made for ADNU.", image: "/YumHunt.png" },
-    { id: 6, title: "ADNU-ECO", category: "Web Dev (Django/HTML/CSS)", description: "Ecommerce website built for the ADNU community.", image: "/ADNUeco.png" },
-    { id: 7, title: "Intramurals System", category: "System (JS/HTML/CSS)", description: "Management System for Universities.", image: "https://placehold.co/600x400/222/3b82f6?text=IMS" },
-    { id: 8, title: "Swiftly thread", category: "Frontend (JS/HTML/CSS)", description: "A fan Taylor Swift tribute page.", image: "/Taylor.png" },
-    { id: 9, title: "Chargeee!!!", category: "Text-Based Game (C Language)", description: "Text and turn-based game created using C with client and server side implementation.", image: "https://placehold.co/600x400/222/3b82f6?text=Chargeee" },
+    { id: 1, title: "SPARTA", category: "Web Dev (MERN)", description: "Sports Planning and Resource Tracking App.", image: "/Sparta.png", demoLink: "https://sparta-deployed.vercel.app/", repoLink: "https://github.com/ListlessWinter/SPARTA-DEPLOYED" },
+    { id: 2, title: "PIMS", category: "Web Dev (MERN)", description: "Pharmacy Inventory Management System.", image: "https://placehold.co/600x400/222/3b82f6?text=PIMS", demoLink: "https://pims-d-f.vercel.app/", repoLink: "https://github.com/ListlessWinter/PIMS_D" },
+    { id: 3, title: "IMSU", category: "Web Dev (JS/HTML/Css)", description: "Intramurals Management System for Universities", image: "/IMSU.png", demoLink: "https://vyv-imsu.vercel.app/", repoLink: "https://github.com/ListlessWinter/VYV-IMSU" },
+    { id: 4, title: "Simple Calculator", category: "Frontend (JS/HTML/CSS)", description: "A functional calculator web application built with vanilla JavaScript.", image: "https://placehold.co/600x400/222/3b82f6?text=Calculator", demoLink: "https://sparta-live-demo.com", repoLink: "https://github.com/ListlessWinter/sparta" },
+    { id: 5, title: "YUMHUNT", category: "Mobile App (Flutter & Dart)", description: "A Food mobile App specifically made for ADNU.", image: "/YumHunt.png", demoLink: "https://sparta-live-demo.com", repoLink: "https://github.com/ListlessWinter/YumHuntFileZero" },
+    { id: 6, title: "ADNU-ECO", category: "Web Dev (Django/HTML/CSS)", description: "Ecommerce website built for the ADNU community.", image: "/ADNUeco.png", demoLink: "https://sparta-live-demo.com", repoLink: "https://github.com/ListlessWinter/ADNU-E-Commerce" },
+    { id: 7, title: "Swiftly thread", category: "Web Dev(JS/HTML/CSS)", description: "A fan Taylor Swift tribute page.", image: "/Taylor.png", demoLink: "https://taylornation.web.app/?fbclid=IwY2xjawO_8DtleHRuA2FlbQIxMQBzcnRjBmFwcF9pZAEwAAEe7JaBY6l-HhPPy6mro6sc2jfriLcSYUNgppwOTdZHUDtIfhDgOLZAjbMaAoQ_aem_BdoBuaxpd3xbzqaejOBasg", repoLink: "https://github.com/ListlessWinter/TaylorNation" },
+    { id: 8, title: "Chargeee!!!", category: "Text-Based Game (C Language)", description: "Text and turn-based game created using C with client and server side implementation.", image: "https://placehold.co/600x400/222/3b82f6?text=Chargeee", demoLink: "https://sparta-live-demo.com", repoLink: "https://github.com/ListlessWinter/OperatingSystems" },
   ];
 
   // Spliting the Projects
@@ -281,8 +280,8 @@ function App() {
         </div>
       </section>
 
-      {/* Projects */}
-      <section id="work" className="section" ref={workRef}>
+     {/* Projects */}
+     <section id="work" className="section" ref={workRef}>
         <div className="container">
           <h2 className="section-title">Latest Work</h2>
 
@@ -294,13 +293,30 @@ function App() {
                 className={`featured-row ${index % 2 === 1 ? 'reverse' : ''} animate-on-scroll fade-up`}
               >
                 <div className="featured-image-container">
-                  <img src={project.image} alt={project.title} className="featured-image" />
+                  {project.demoLink ? (
+                    <a 
+                      href={project.demoLink} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      style={{ display: 'block', width: '100%', height: '100%' }} 
+                    >
+                      <img src={project.image} alt={project.title} className="featured-image" />
+                    </a>
+                  ) : (
+                    <img src={project.image} alt={project.title} className="featured-image" />
+                  )}
                 </div>
+                
                 <div className="featured-content">
                   <span className="tag">{project.category}</span>
                   <h3>{project.title}</h3>
                   <p>{project.description}</p>
-                  <a href="#" className="btn">View Project</a>
+                  
+                  {project.repoLink && (
+                    <a href={project.repoLink} target="_blank" rel="noopener noreferrer" className="btn">
+                      <Github size={18} style={{ marginRight: '8px' }}/> View Code
+                    </a>
+                  )}
                 </div>
               </div>
             ))}
@@ -312,21 +328,33 @@ function App() {
             {otherProjects.map((project, index) => (
               <div key={project.id} className="card fire-border animate-on-scroll fade-up"
                 style={{ transitionDelay: `${index * 100}ms` }}>
-                <img src={project.image} alt={project.title} className="card-image" />
+                
+                {project.demoLink ? (
+                  <a href={project.demoLink} target="_blank" rel="noopener noreferrer" style={{ display: 'block' }}>
+                     <img src={project.image} alt={project.title} className="card-image" />
+                  </a>
+                ) : (
+                  <img src={project.image} alt={project.title} className="card-image" />
+                )}
+
                 <div className="card-content">
                   <span className="tag">{project.category}</span>
                   <h3>{project.title}</h3>
                   <p>{project.description}</p>
                   <div className="card-actions">
-                    <a href="#" className="project-link">
-                      View Project <ExternalLink size={16} />
-                    </a>
+      
+                    {project.repoLink ? (
+                      <a href={project.repoLink} target="_blank" rel="noopener noreferrer" className="project-link">
+                        View Code <Github size={16} style={{ marginLeft: '5px' }}/>
+                      </a>
+                    ) : (
+                      <span className="project-link" style={{ opacity: 0.5 }}>Private Repo</span>
+                    )}
                   </div>
                 </div>
               </div>
             ))}
           </div>
-
         </div>
       </section>
 
