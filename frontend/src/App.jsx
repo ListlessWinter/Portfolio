@@ -8,6 +8,9 @@ import projectBg from './assets/Project.jpg';
 import contactBg from './assets/Contacts.jpg';
 
 import MouseParticles from './MouseParticles';
+import SakuraParticles from './SakuraParticles';
+import GlitchText from './GlitchText';
+
 
 function App() {
   const [activeSection, setActiveSection] = useState('home');
@@ -136,7 +139,10 @@ function App() {
 
   return (
     <div>
+     {/* Cool shitz */}
       <MouseParticles />
+      <SakuraParticles />
+
       <div className="bg-container">
         {/* Home BgImage */}
         <img
@@ -169,8 +175,13 @@ function App() {
 
       {/* Navbar */}
       <nav className='navbar'>
-        <div className="container navbar-content">
-          <a href="#home" className="logo">Vincent Dolera</a>
+        <div className="container navbar-content font-brush">
+          <a href="#home" className="logo font-brush"><GlitchText 
+              text="Vincent Dolera" 
+              jpText="ヴィンセント・ドレラ" 
+              style={{ minWidth: '220px' }} // Keeps navbar from jumping width
+            />
+          </a>
 
           <div className="nav-links" onMouseLeave={handleMouseLeave}>
 
@@ -195,29 +206,45 @@ function App() {
 
       {/* Home */}
       <header className="section" ref={homeRef} id="home">
-        <div className="container grid-2">
-          <div className="animate-on-scroll fade-up">
-            <span className="tag" style={{ marginBottom: '15px', display: 'inline-block' }}>
-              Welcome to my portfolio
-            </span>
-            <h1 className="hero-heading">Hi, I'm Vincent Dolera. <br /> BS Information Technology.</h1>
-            <a href="#contact" className="btn">Get in Touch</a>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'center', transitionDelay: '200ms' }} className="animate-on-scroll fade-up">
-            <img src={profileImg} alt="Vincent Dolera" className="hero-image" />
-          </div>
-        </div>
-      </header>
+  <div className="container grid-2">
+    <div className="animate-on-scroll fade-up">
+      
+      {/* 1. Tagline Glitch */}
+      <div style={{ marginBottom: '15px', display: 'inline-block' }}>
+        <span className="tag font-brush">
+          <GlitchText text="Welcome to my portfolio" jpText="ポートフォリオへようこそ" />
+        </span>
+      </div>
+
+      {/* 2. Main Heading Glitch */}
+      <h1 className="hero-heading font-brush">
+        <GlitchText text="Hi, I'm Vincent Dolera." jpText="こんにちは、ヴィンセントです。" /> 
+        <br /> 
+        <GlitchText text="BS Information Technology." jpText="情報工学の学生。" />
+      </h1>
+
+      {/* 3. Button Glitch */}
+      <a href="#contact" className="btn font-brush">
+         <GlitchText text="Get in Touch" jpText="お問い合わせ" />
+      </a>
+
+    </div>
+    
+    <div style={{ display: 'flex', justifyContent: 'center', transitionDelay: '200ms' }} className="animate-on-scroll fade-up">
+      <img src={profileImg} alt="Vincent Dolera" className="hero-image" />
+    </div>
+  </div>
+</header>
 
       {/* About */}
       <section className="section" ref={aboutRef} id="about">
         <div className="container">
-          <h2 className="section-title animate-on-scroll fade-up">About Me</h2>
+          <h2 className="section-title animate-on-scroll fade-up font-brush">About Me</h2>
           <div style={{ maxWidth: '900px', margin: '0 auto' }}>
 
             {/* Bio Paragraph */}
             <p
-              className="animate-on-scroll fade-up"
+              className="animate-on-scroll fade-up font-brush"
               style={{ fontSize: '1.2rem', color: '#d1d5db', marginBottom: '30px', lineHeight: '1.8', textAlign: 'center' }}
             >
               I'm an IT student who enjoys turning ideas into reality through coding. I am responsible and motivated with experience in both
@@ -229,9 +256,9 @@ function App() {
 
             {/* Education & Hobbies */}
             <div className="about-grid">
-              <div className="about-column animate-on-scroll slide-from-left">
+              <div className="about-column animate-on-scroll slide-from-left font-brush">
                 <h3>Education:</h3>
-                <ul className="info-list">
+                <ul className="info-list font-brush">
                   <li>
                     <strong>High School:</strong> La Consolacion College of Daet (2014 - 2019)
                   </li>
@@ -241,9 +268,9 @@ function App() {
                 </ul>
               </div>
 
-              <div className="about-column animate-on-scroll slide-from-right">
+              <div className="about-column animate-on-scroll slide-from-right font-brush">
                 <h3>Hobbies:</h3>
-                <ul className="info-list">
+                <ul className="info-list font-brush">
                   <li>🎮 Playing Video Games</li>
                   <li>🤖 Building Plastic Model Kits </li>
                   <li>📚 Reading Manga and Novels</li>
@@ -253,16 +280,16 @@ function App() {
           </div>
         </div>
 
-        <div className="tech-section animate-on-scroll fade-up">
+        <div className="tech-section animate-on-scroll fade-up font-brush">
           <h3 style={{ fontSize: '1.5rem', marginBottom: '20px', color: '#fff' }}>Technologies</h3>
 
-          <div className="scroller">
-            <div className="scroller-inner">
+          <div className="scroller font-brush">
+            <div className="scroller-inner font-brush">
               {[
                 "React.js", "Node.js", "JavaScript", "HTML", "CSS",
                 "C Language", "C++", "Java", "Dart", "Flutter", "SQL", "Git"
               ].map((skill, index) => (
-                <div className="tech-item" key={index}>
+                <div className="tech-item font-brush" key={index}>
                   {skill}
                 </div>
               ))}
@@ -271,7 +298,7 @@ function App() {
                 "React.js", "Node.js", "JavaScript", "HTML", "CSS",
                 "C Language", "C++", "Java", "Dart", "Flutter", "SQL", "Git"
               ].map((skill, index) => (
-                <div className="tech-item" key={`duplicate-${index}`}>
+                <div className="tech-item font-brush" key={`duplicate-${index}`}>
                   {skill}
                 </div>
               ))}
@@ -283,10 +310,10 @@ function App() {
      {/* Projects */}
      <section id="work" className="section" ref={workRef}>
         <div className="container">
-          <h2 className="section-title">Latest Work</h2>
+          <h2 className="section-title font-brush">Latest Work</h2>
 
           {/* Latest Projects */}
-          <div className="featured-list">
+          <div className="featured-list font-brush">
             {featuredProjects.map((project, index) => (
               <div
                 key={project.id}
@@ -323,8 +350,8 @@ function App() {
           </div>
 
           {/* Other Projects */}
-          <h3 className="section-title" style={{ fontSize: '1.5rem', marginTop: '80px' }}>More Projects</h3>
-          <div className="grid-3">
+          <h3 className="section-title font-brush" style={{ fontSize: '1.5rem', marginTop: '80px' }}>More Projects</h3>
+          <div className="grid-3 font-brush">
             {otherProjects.map((project, index) => (
               <div key={project.id} className="card fire-border animate-on-scroll fade-up"
                 style={{ transitionDelay: `${index * 100}ms` }}>
@@ -360,7 +387,7 @@ function App() {
 
       {/* Contacts */}
       <footer id="contact" className="section footer-section" ref={contactRef}>
-        <div className="container footer-content">
+        <div className="container footer-content font-brush">
           <h2 className="footer-title">Let's turn ideas into reality.</h2>
           <p className="footer-desc">Have a project in mind? Let's build something amazing.</p>
           <a href="mailto:vincentdolera25@gmail.com" className="btn">Say Hello</a>
