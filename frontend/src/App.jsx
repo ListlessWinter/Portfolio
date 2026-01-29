@@ -179,7 +179,6 @@ function App() {
           <a href="#home" className="logo font-brush"><GlitchText 
               text="Vincent Dolera" 
               jpText="ヴィンセント・ドレラ" 
-              style={{ minWidth: '220px' }} // Keeps navbar from jumping width
             />
           </a>
 
