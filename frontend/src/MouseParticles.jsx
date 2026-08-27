@@ -1,5 +1,41 @@
 import React, { useEffect, useRef } from 'react';
 
+class Particle {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.size = Math.random() * 15 + 10; 
+    this.opacity = 1; 
+    this.speedY = Math.random() * -0.5 - 0.2; 
+    this.angle = Math.random() * Math.PI * 2; 
+    this.spinSpeed = Math.random() * 0.05 + 0.02;
+    this.hue = Math.random() * 60 + 160; 
+  }
+
+  update() {
+    this.y += this.speedY;
+    this.angle += this.spinSpeed;
+    this.x += Math.sin(this.angle) * 0.5; 
+    if (this.opacity > 0) this.opacity -= 0.008; 
+    if (this.size > 0.2) this.size -= 0.05;
+  }
+
+  draw(ctx) {
+    const gradient = ctx.createRadialGradient(
+        this.x, this.y, 0, 
+        this.x, this.y, this.size 
+    );
+    gradient.addColorStop(0, `hsla(${this.hue}, 100%, 90%, ${this.opacity})`);
+    gradient.addColorStop(0.4, `hsla(${this.hue}, 100%, 50%, ${this.opacity * 0.6})`);
+    gradient.addColorStop(1, `hsla(${this.hue}, 100%, 50%, 0)`);
+
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size * 1.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
 const MouseParticles = () => {
   const canvasRef = useRef(null);
   const particles = useRef([]);
@@ -39,41 +75,6 @@ const MouseParticles = () => {
         mouse.current.y = undefined;
     });
 
-    class Particle {
-      constructor() {
-        this.x = mouse.current.x;
-        this.y = mouse.current.y;
-        this.size = Math.random() * 15 + 10; 
-        this.opacity = 1; 
-        this.speedY = Math.random() * -0.5 - 0.2; 
-        this.angle = Math.random() * Math.PI * 2; 
-        this.spinSpeed = Math.random() * 0.05 + 0.02;
-        this.hue = Math.random() * 60 + 160; 
-      }
-
-      update() {
-        this.y += this.speedY;
-        this.angle += this.spinSpeed;
-        this.x += Math.sin(this.angle) * 0.5; 
-        if (this.opacity > 0) this.opacity -= 0.008; 
-        if (this.size > 0.2) this.size -= 0.05;
-      }
-
-      draw() {
-        const gradient = ctx.createRadialGradient(
-            this.x, this.y, 0, 
-            this.x, this.y, this.size 
-        );
-        gradient.addColorStop(0, `hsla(${this.hue}, 100%, 90%, ${this.opacity})`);
-        gradient.addColorStop(0.4, `hsla(${this.hue}, 100%, 50%, ${this.opacity * 0.6})`);
-        gradient.addColorStop(1, `hsla(${this.hue}, 100%, 50%, 0)`);
-
-        ctx.fillStyle = gradient;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size * 1.5, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -86,12 +87,12 @@ const MouseParticles = () => {
         mouse.current.x !== undefined && 
         !isHoveringInteractive.current 
       ) {
-         particles.current.push(new Particle());
+         particles.current.push(new Particle(mouse.current.x, mouse.current.y));
       }
 
       particles.current.forEach((particle, index) => {
         particle.update();
-        particle.draw();
+        particle.draw(ctx);
 
         if (particle.opacity <= 0.01 || particle.size <= 0.2) {
           particles.current.splice(index, 1);

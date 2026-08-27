@@ -35,7 +35,7 @@ const GlitchText = ({ text, jpText, className = "" }) => {
       display: 'inline-grid', // Use Grid to stack elements
       verticalAlign: 'bottom' // Aligns text correctly on the line
     }}>
-      {/* 1. THE INVISIBLE SPACER */}
+      {/* 1. THE INVISIBLE SPACER (English) */}
       {/* This copy of the English text is invisible but forces the 
           container to stay exactly this wide/tall at all times. */}
       <span style={{ 
@@ -45,6 +45,17 @@ const GlitchText = ({ text, jpText, className = "" }) => {
         whiteSpace: 'nowrap' // Prevent unexpected wrapping
       }}>
         {text}
+      </span>
+
+      {/* 1b. THE INVISIBLE SPACER (Japanese) */}
+      {/* Forces the container to also account for the Japanese text's dimensions, ensuring no layout shift. */}
+      <span style={{ 
+        gridArea: '1 / 1', 
+        opacity: 0,        
+        pointerEvents: 'none',
+        whiteSpace: 'nowrap' 
+      }}>
+        {jpText}
       </span>
 
       {/* 2. THE VISIBLE GLITCH TEXT */}
