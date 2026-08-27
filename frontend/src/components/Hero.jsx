@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
 import GlitchText from '../GlitchText';
 import profileImg from '../assets/gradphoto.jpg';
-import cvFile from '../assets/CV.pdf';
-import resumeFile from '../assets/Resume.pdf';
+import cvFile from '../assets/Vincent_Dolera_CV.pdf';
+import resumeFile from '../assets/Vincent_Dolera_Resume.pdf';
 
 const Hero = React.forwardRef((props, ref) => {
   const cardRef = useRef(null);
