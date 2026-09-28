@@ -1,76 +1,92 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
+// Full-width katakana while decoding into Japanese; narrow half-width ones (plus latin)
+// while decoding back to English, so the in-between text keeps roughly the right width.
+const JP_SCRAMBLE = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン';
+const EN_SCRAMBLE = 'ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎABCDEFGHKMNRSTXZ';
+const DURATION = 520;
+const FRAME_MS = 38;
+
+// English text that decodes into Japanese while hovered (tap on touch, focus on keyboard).
 const GlitchText = ({ text, jpText, className = "" }) => {
-  const [currentText, setCurrentText] = useState(text);
+  const [display, setDisplay] = useState(text);
+  const [isJapanese, setIsJapanese] = useState(false);
   const [isGlitching, setIsGlitching] = useState(false);
+  const rafRef = useRef(0);
+  const pointerTypeRef = useRef('mouse');
 
-  useEffect(() => {
-    let timeoutId;
+  useEffect(() => () => cancelAnimationFrame(rafRef.current), []);
 
-    const triggerGlitch = () => {
-      // Random delay between 2 and 5 seconds
-      const randomDelay = Math.random() * 3000 + 2000;
+  const scrambleTo = (target, toJapanese) => {
+    cancelAnimationFrame(rafRef.current);
+    setIsJapanese(toJapanese);
+    setIsGlitching(true);
 
-      timeoutId = setTimeout(() => {
-        setIsGlitching(true);
-        setCurrentText(jpText);
+    const pool = toJapanese ? JP_SCRAMBLE : EN_SCRAMBLE;
+    const start = performance.now();
+    let lastFrame = 0;
 
-        // Switch back to English after 1.5 seconds
-        setTimeout(() => {
-          setCurrentText(text);
-          setIsGlitching(false);
-          triggerGlitch();
-        }, 1500); 
-
-      }, randomDelay);
+    const tick = (now) => {
+      const progress = Math.min((now - start) / DURATION, 1);
+      if (now - lastFrame >= FRAME_MS || progress === 1) {
+        lastFrame = now;
+        const resolved = Math.floor(progress * target.length);
+        let out = '';
+        for (let i = 0; i < target.length; i++) {
+          const ch = target[i];
+          out += i < resolved || ch === ' '
+            ? ch
+            : pool[Math.floor(Math.random() * pool.length)];
+        }
+        setDisplay(out);
+      }
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(tick);
+      } else {
+        setDisplay(target);
+        setIsGlitching(false);
+      }
     };
+    rafRef.current = requestAnimationFrame(tick);
+  };
 
-    triggerGlitch();
-
-    return () => clearTimeout(timeoutId);
-  }, [text, jpText]);
+  const showJapanese = () => { if (!isJapanese) scrambleTo(jpText, true); };
+  const showEnglish = () => { if (isJapanese) scrambleTo(text, false); };
 
   return (
-    <span style={{ 
-      display: 'inline-grid', // Use Grid to stack elements
-      verticalAlign: 'bottom' // Aligns text correctly on the line
-    }}>
-      {/* 1. THE INVISIBLE SPACER (English) */}
-      {/* This copy of the English text is invisible but forces the 
-          container to stay exactly this wide/tall at all times. */}
-      <span style={{ 
-        gridArea: '1 / 1', // Sit in row 1, col 1
-        opacity: 0,        // Invisible
-        pointerEvents: 'none',
-        whiteSpace: 'nowrap' // Prevent unexpected wrapping
-      }}>
-        {text}
-      </span>
+    <span
+      className={`glitch-text ${isJapanese ? 'is-jp' : ''}`}
+      tabIndex={0}
+      role="button"
+      aria-label={`${text} (${jpText})`}
+      aria-pressed={isJapanese}
+      onPointerDown={(e) => { pointerTypeRef.current = e.pointerType; }}
+      onPointerEnter={(e) => { if (e.pointerType === 'mouse') showJapanese(); }}
+      onPointerLeave={(e) => { if (e.pointerType === 'mouse') showEnglish(); }}
+      onClick={() => {
+        if (pointerTypeRef.current !== 'mouse') {
+          if (isJapanese) showEnglish(); else showJapanese();
+        }
+      }}
+      onFocus={() => { if (pointerTypeRef.current === 'mouse') showJapanese(); }}
+      onBlur={showEnglish}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          if (isJapanese) showEnglish(); else showJapanese();
+        }
+      }}
+    >
+      {/* Invisible spacers reserve room for both languages so nothing shifts */}
+      <span className="glitch-spacer" aria-hidden="true">{text}</span>
+      <span className="glitch-spacer spacer-jp" aria-hidden="true">{jpText}</span>
 
-      {/* 1b. THE INVISIBLE SPACER (Japanese) */}
-      {/* Forces the container to also account for the Japanese text's dimensions, ensuring no layout shift. */}
-      <span style={{ 
-        gridArea: '1 / 1', 
-        opacity: 0,        
-        pointerEvents: 'none',
-        whiteSpace: 'nowrap' 
-      }}>
-        {jpText}
-      </span>
-
-      {/* 2. THE VISIBLE GLITCH TEXT */}
-      {/* This sits exactly on top of the spacer */}
-      <span 
+      <span
         className={`glitch-wrapper ${isGlitching ? 'glitch-active' : ''} ${className}`}
-        data-text={currentText}
-        style={{ 
-          gridArea: '1 / 1', // Sit in row 1, col 1 (on top of spacer)
-          whiteSpace: 'nowrap',
-          width: '100%',
-          textAlign: 'center' // Ensures Japanese text centers in the English box
-        }} 
+        data-text={display}
+        aria-hidden="true"
       >
-        {currentText}
+        {display}
       </span>
     </span>
   );

@@ -4,6 +4,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   z-index: 100000;
   display: flex;
   pointer-events: all;
@@ -11,7 +12,7 @@
   background-color: transparent;
 }
 
-/* We disable pointer events on the container once it starts opening, 
+/* We disable pointer events on the container once it starts opening,
    so the user can immediately click through the opening doors */
 .loading-screen-container.opening {
   pointer-events: none;
@@ -67,6 +68,21 @@
   padding-right: 20px;
 }
 
+/* Recessed hikite (finger pull) on each door */
+.door-handle {
+  position: absolute;
+  top: 68%;
+  width: 14px;
+  height: 46px;
+  margin-top: -23px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #0d0401, #2a1206);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.9), 0 0 0 2px #3a1b0b;
+}
+
+.door-left .door-handle { right: 34px; }
+.door-right .door-handle { left: 34px; }
+
 /* Rice paper */
 .paper {
   width: 100%;
@@ -78,13 +94,13 @@
 }
 
 .door-left .paper {
-  background-image: 
+  background-image:
     radial-gradient(circle at right center, transparent 0%, rgba(0,0,0,0.95) 150%),
     url('https://www.transparenttextures.com/patterns/aged-paper.png');
 }
 
 .door-right .paper {
-  background-image: 
+  background-image:
     radial-gradient(circle at left center, transparent 0%, rgba(0,0,0,0.95) 150%),
     url('https://www.transparenttextures.com/patterns/aged-paper.png');
 }
@@ -92,12 +108,12 @@
 /* Wood lattice grid on top of paper */
 .wood-grid {
   position: absolute;
-  top: 0; 
-  left: 0; 
-  right: 0; 
+  top: 0;
+  left: 0;
+  right: 0;
   bottom: 0;
   /* Thick dark wooden bars */
-  background-image: 
+  background-image:
     repeating-linear-gradient(to right, transparent, transparent calc(33.33% - 12px), #1a0802 calc(33.33% - 12px), #1a0802 33.33%),
     repeating-linear-gradient(to bottom, transparent, transparent calc(20% - 12px), #1a0802 calc(20% - 12px), #1a0802 20%);
   box-shadow: inset 0 0 40px rgba(0,0,0,0.9); /* Deep inner shadow for grid depth */
@@ -113,38 +129,81 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
-  transition: opacity 0.5s ease;
+  gap: 18px;
+  transition: opacity 0.5s ease, transform 0.6s ease;
   pointer-events: none;
 }
 
 .loading-indicator-wrapper.fade-out {
   opacity: 0;
+  transform: translate(-50%, -50%) scale(1.15);
 }
 
-.spinner {
-  width: 50px;
-  height: 50px;
-  border: 3px solid rgba(255, 255, 255, 0.1);
-  border-top-color: var(--accent-magenta);
+/* Ensō: a single brush circle that paints itself */
+.enso {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  display: grid;
+  place-items: center;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
-  box-shadow: 0 0 15px rgba(255, 0, 193, 0.4);
+  background: radial-gradient(circle, rgba(5, 5, 5, 0.85) 55%, transparent 72%);
+}
+
+.enso svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 6px rgba(255, 0, 193, 0.6));
+}
+
+.enso path {
+  fill: none;
+  stroke: url(#enso-ink);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: enso-draw 1.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+.enso-seal {
+  width: 34px;
+  height: 34px;
+  font-size: 0.72rem;
+  opacity: 0;
+  animation: seal-stamp 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 1.1s forwards;
 }
 
 .loading-text {
   color: #fff;
-  font-size: 1.2rem;
+  font-size: 1rem;
   letter-spacing: 4px;
-  animation: pulse 1.5s ease-in-out infinite;
+  animation: loading-pulse 1.5s ease-in-out infinite;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: rgba(5, 5, 5, 0.6);
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+@keyframes enso-draw {
+  to { stroke-dashoffset: 0; }
 }
 
-@keyframes pulse {
+@keyframes seal-stamp {
+  0% { opacity: 0; transform: scale(1.8) rotate(-12deg); }
+  100% { opacity: 1; transform: scale(1) rotate(-6deg); }
+}
+
+@keyframes loading-pulse {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enso path { animation-duration: 0.01s; }
+  .enso-seal { animation-delay: 0s; }
 }
